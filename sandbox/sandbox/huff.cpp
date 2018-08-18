@@ -3,6 +3,8 @@
 #include <bitset>
 #include <cstddef>
 #include <charconv>
+#include <fstream>
+#include <vector>
 
 
 const size_t bitsetsize_ = 8;
@@ -24,6 +26,13 @@ template<typename T>
 void binaryof(T t) {
 	auto a = std::bitset<bitsetsize_>(t);
 	std::cout << a << std::endl;
+}
+
+
+template<typename T>
+void binaryofNoEndLine(T t) {
+	auto a = std::bitset<bitsetsize_>(t);
+	std::cout << a;
 }
 
 
@@ -63,8 +72,12 @@ int huff::putBit(unsigned int bit)
 }
 
 
-int huff::putByte(unsigned char byte)
+std::vector<char> byte_vector;
+
+
+int putByte(unsigned char byte)
 {
+	byte_vector.emplace_back(byte);
 	return 1;
 }
 
@@ -115,6 +128,53 @@ int main()
 
 	std::byte myByteFour{ 0b00000010 }; // making an std::byte and initializing with bin rep of 2 using binary literal
 	std::cout << std::to_integer<int>(myByteFour) << std::endl; // output is 2!
+
+	binaryof(128); // output is 1000000
+	binaryof(7); // output is 00000111
+	std::cout << byteToInt(0b111) << std::endl; // output is 7
+	std::cout << byteToInt(0b00000000000111) << std::endl; // output is 7
+	std::cout << byteToInt(0b11100101) << std::endl; // output is 229
+
+	std::cout << "here comes hello world" << std::endl;
+	binaryofNoEndLine('H');
+	binaryofNoEndLine('e');
+	binaryofNoEndLine('l');
+	binaryofNoEndLine('l');
+	binaryofNoEndLine('o');
+	binaryofNoEndLine(' ');
+	binaryofNoEndLine('W');
+	binaryofNoEndLine('o');
+	binaryofNoEndLine('r');
+	binaryofNoEndLine('l');
+	binaryofNoEndLine('d');
+	binaryofNoEndLine('n');
+
+	huff h;
+
+	const int bytesize = sizeof(char);
+	std::ifstream innie("innards.txt");
+	char buffer[bytesize];
+	int count = 0;
+	std::ofstream outf("outters.txt");
+
+
+	while (innie.get(buffer[count]))
+	{
+		if (++count == bytesize)
+		{
+			int a = putByte(*buffer);
+			count = 0;
+		}
+
+		if (count)
+		{
+			while (count != bytesize) buffer[count++] = '0';
+			int b = putByte(*buffer);
+		}
+	}
+
+	for (auto i : byte_vector)
+		outf << byte_vector[i];
 
 	return 0;
 }
