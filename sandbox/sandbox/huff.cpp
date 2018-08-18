@@ -80,7 +80,6 @@ int main()
 	huff h;
 	h.getBit();
 	
-	for (auto i : h.)
 
 	return 0;
 }
