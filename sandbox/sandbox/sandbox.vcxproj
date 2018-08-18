@@ -119,7 +119,6 @@
     <ClCompile Include="huff.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="binary.h" />
     <ClInclude Include="huff.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
