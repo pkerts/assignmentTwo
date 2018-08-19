@@ -7,8 +7,6 @@ class huff
 private:
 	static const int bytesize = CHAR_BIT;
 	char buffer[bytesize];
-	std::bitset<bytesize> buffers;
-	std::vector<std::byte> bytevector_;
 	int count;
 public:
 	huff();
@@ -18,7 +16,7 @@ public:
 	int putByte(unsigned char byte);
 	void getBit();
 	void getByte(char* buffer);
-	void flush();
+	int flush();
 	void write();
 };
 
