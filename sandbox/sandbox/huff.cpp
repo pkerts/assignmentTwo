@@ -29,10 +29,13 @@ int huff::putBit(unsigned int bit)
 
 int huff::putByte(unsigned char byte)
 {
+	char* buff = reinterpret_cast<char*>(byte);
 	for (int i = 0; i < bytesize; ++i)
+		std::cout << buff[i];
+	/*for (int i = 0; i < bytesize; ++i)
 	{
 		putBit(byte);
-	}
+	}*/
 	return 1;
 }
 
@@ -57,8 +60,9 @@ void huff::getBit()
 
 void huff::getByte(char* buffer)
 {
-	for (int i = 0; i < bytesize; ++i)
-		std::cout << buffer[i];
+	std::cout << buffer;
+	// for (int i = 0; i < bytesize; ++i)
+		// std::cout << buffer[i];
 	// bytevector_.emplace_back();
 }
 
