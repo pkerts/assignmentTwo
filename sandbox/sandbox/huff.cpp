@@ -46,7 +46,16 @@ void huff::getBit()
 		if (++count == bytesize)
 		{
 			std::bitset<8> char_yy(buffer, 8, '0', '1');
-			std::cout << (char)char_yy.to_ulong();
+			std::cerr << (char)char_yy.to_ulong();
+			std::cerr << (int)char_yy.to_ulong();
+			std::byte bb{ (unsigned char)char_yy.to_ulong() };
+			std::cerr << "heres byte bb: " << (int)bb << std::endl;
+			std::byte b{ 'H' };
+			std::cerr << "here's byte b: " << (char)b << std::endl;
+			std::byte c{ 0b01001000 };
+			std::cerr << "here's byte c: " << (char)c << std::endl;
+			std::cerr << buffer << std::flush << std::endl;
+			// bytevector_.emplace_back((std::byte)buffer);
 			// print(inptr);
 			// std::cerr << buffer << std::endl;
 			// getByte(buffer);
@@ -164,6 +173,11 @@ void printmapgraph(std::map<char, int> m)
 		printsplats(v, max);
 		std::cout << std::endl;
 	}
+}
+
+void huff::AddToVector(std::byte b)
+{
+	bytevector_.emplace_back(b);
 }
 
 int main()
