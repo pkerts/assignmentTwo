@@ -5,7 +5,8 @@
 #include <charconv>
 #include <fstream>
 #include <vector>
-
+#include <map>
+#include <algorithm>
 
 huff::huff() : count(0)
 {
@@ -20,20 +21,20 @@ huff::~huff()
 
 int huff::putBit(unsigned int bit)
 {
-	buffer[count] = bit;
+	buffertwo[count] = bit;
 	if (++count == bytesize)
 	{
-		putByte(reinterpret_cast<unsigned char>(buffer));
+		putByte(buffertwo);
 		count = 0;
 		return count;
 	}
 }
 
 
-int huff::putByte(unsigned char byte)
+int huff::putByte(char* byte)
 {
 	std::cout << byte;
-	return flush();
+	return flushtwo();
 }
 
 void huff::getBit()
@@ -59,7 +60,7 @@ void huff::getBit()
 void huff::getByte(char* buff)
 {
 	count = 0;
-	for (int i = bytesize - 1; i >= 0; --i)
+	for (int i = 0; i < bytesize; ++i)
 		putBit(buff[i]);
 
 	// for (int i = 0; i < bytesize; ++i)
@@ -95,6 +96,43 @@ int huff::flush()
 	return count;
 }
 
+int huff::flushtwo()
+{
+	if (count = 0)
+	{
+		while (count != bytesize)
+		{
+			buffertwo[count] = '0';
+			++count;
+		}
+	}
+	while (count != bytesize) buffertwo[count++] = '0';
+	count = 0;
+	return count;
+}
+
+void printsplats(int v, int max)
+{
+	int j = (v * 50) / max + ((((v * 50) < 0) ^ (max > 0)) && ((v * 50)%max));
+	for (int i = 0; i < j; ++i)
+		std::cout << "/";
+}
+
+void printmapgraph(std::map<char, int> m)
+{
+	using pair_type = decltype(m)::value_type;
+	auto x = std::max_element(m.begin(), m.end(),
+		[](const pair_type & p1, const pair_type & p2) {
+		return p1.second < p2.second; });
+	auto max = x->second;
+	for (const auto& [ k, v ] : m)
+	{
+		std::cout << k << ": ";
+		printsplats(v, max);
+		std::cout << std::endl;
+	}
+}
+
 int main()
 {
 
@@ -111,10 +149,21 @@ int main()
 	// huff h;
 	// h.getBit();
 	
-	std::bitset<8> charry{ 0b00011000 };
-	std::cout << charry.to_ulong();
+	// std::bitset<8> charry{ 0b00011000 };
+	// std::cout << charry.to_ulong();
 
 	// h.write();
+
+	std::map <char, int> m1;
+	std::ifstream file("pg20197.txt");
+	std::istreambuf_iterator<char> end;
+
+	for (std::istreambuf_iterator<char> loop(file); loop != end; ++loop)
+	{
+		++m1[*loop]; // prefer prefix increment out of habbit
+	}
+
+	printmapgraph(m1);
 
 	return 0;
 }
