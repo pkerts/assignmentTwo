@@ -45,7 +45,17 @@ void huff::getBit()
 	{
 		if (++count == bytesize)
 		{
-			getByte(buffer);
+			std::bitset<8> char_yy(buffer, 8, '0', '1');
+			std::cout << (char)char_yy.to_ulong();
+			// print(inptr);
+			// std::cerr << buffer << std::endl;
+			// getByte(buffer);
+			/*for (int i = 0; i < bytesize; ++i)
+				std::cout << (buffer[i]);*/
+			// std::bitset<8> butthead{buffer};
+			// unsigned long i = butthead.to_ulong();
+			// unsigned char c = static_cast<unsigned char>(i);
+			// std::cout << c;
 			count = 0;
 		}
 
@@ -53,9 +63,32 @@ void huff::getBit()
 	if (count)
 	{
 		flush();
-		getByte(buffer);
+		std::bitset<8> char_yy(buffer, 8, '0', '1');
+		std::cout << (char)char_yy.to_ulong() << std::endl;
+		/*for (int i = 0; i < bytesize; ++i)
+			std::cout << (buffer[i]);*/
+		// std::bitset<8> beavis{buffer};
+		// unsigned long f = beavis.to_ulong();
+		// unsigned char j = static_cast<unsigned char>(f);
+		// std::cout << j;
+		// getByte(buffer);
 	}
 }
+
+//void huff::print(const unsigned long *const v)
+//{
+//	long yup = v[0];
+//	long yes = v[1];
+//	unsigned long ok = 0x30;
+//	char c = 0xFF;
+//	std::bitset<8> char_bs(yup); // templated argument is the size in bits
+//	std::bitset<8> char_ss(yes);
+//	std::bitset<8> char_yy(buffer, 8, '0', '1');
+//	std::cerr << (char)char_yy.to_ulong() << std::endl;
+//	std::cerr << char_bs.to_string() << std::endl;
+//	std::cerr << char_ss.to_string() << std::endl;
+//	std::cerr << "inptr: " << *v << std::endl;
+//}
 
 void huff::getByte(char* buff)
 {
@@ -146,9 +179,15 @@ int main()
 	// std::cout << a[7] << std::endl;
 	// a.set(7);
 	// std::cout << a[7] << std::endl;
-	// huff h;
-	// h.getBit();
+	huff h;
+	h.getBit();
 	
+	/*std::bitset<8> bitter{ 0b01001000 };
+	unsigned long f = bitter.to_ulong();
+	std::cout << f << std::endl;
+	unsigned char j = static_cast<unsigned char>(f);
+	std::cout << "here's j: " << j << std::endl;*/
+
 	// std::bitset<8> charry{ 0b00011000 };
 	// std::cout << charry.to_ulong();
 

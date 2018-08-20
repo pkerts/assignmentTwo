@@ -20,5 +20,7 @@ public:
 	int flush();
 	int flushtwo();
 	void write();
+	void get();
+	void print(const unsigned long *const v);
 };
 
