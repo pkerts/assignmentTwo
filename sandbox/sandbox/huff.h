@@ -3,27 +3,32 @@
 #include <bitset>
 #include <cstddef>
 
+
 class huff
 {
 private:
-	static const int bytesize = CHAR_BIT;
-	char buffer[bytesize] = {0};
+	static const std::size_t bytesize = CHAR_BIT;
+	constexpr int bytesizetwo();
+	char buffer[8];
 	std::vector<std::byte> bytevector_;
 	char buffertwo[bytesize];
 	int count;
+	// std::bitset<>* bac;
 public:
 	huff();
 	~huff();
 
-	int putBit(unsigned int bit);
+	int putBit(std::bitset<bytesize> bb);
 	int putByte(char* byte);
 	void getBit();
-	void getByte(char* buffer);
+
+	template<typename T, std::size_t N>
+	void getByte(T(&)[N]);
+
 	int flush();
-	int flushtwo();
 	void write();
-	void get();
-	void print(const unsigned long *const v);
-	void AddToVector(std::byte b);
+
+	template<typename T, std::size_t N>
+	void PrintArray(T(&)[N]);
 };
 

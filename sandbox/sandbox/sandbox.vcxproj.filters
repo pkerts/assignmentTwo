@@ -18,9 +18,18 @@
     <ClCompile Include="huff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Heap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="huff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="frequencytable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
