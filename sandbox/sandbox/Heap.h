@@ -17,5 +17,8 @@ public:
 	// Node* pop();
 	bool is_empty();
 	void maximum();
+	void HeapSort();
+	int parent(int i);
+	Node pop();
 };
 
