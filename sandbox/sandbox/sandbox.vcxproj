@@ -124,6 +124,8 @@
     <ClInclude Include="frequencytable.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="huff.h" />
+    <ClInclude Include="HuffmanTree.h" />
+    <ClInclude Include="HuffMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

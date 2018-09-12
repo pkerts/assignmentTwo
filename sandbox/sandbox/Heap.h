@@ -5,11 +5,11 @@ template<typename Priority, typename Data>
 class Heap
 {
 private:
-	struct Node {
+	struct HeapNode {
 		Priority priority_;
 		Data data_;
 	};
-	std::vector<Node> veep_;
+	std::vector<HeapNode> veep_;
 public:
 	Heap();
 	~Heap();
@@ -19,6 +19,6 @@ public:
 	void maximum();
 	void HeapSort();
 	int parent(int i);
-	Node pop();
+	HeapNode pop();
 };
 

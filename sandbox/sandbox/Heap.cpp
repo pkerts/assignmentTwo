@@ -1,16 +1,22 @@
 #include "Heap.h"
+#include "HuffmanTree.h"
+#include "HuffMap.h"
 #include <iostream>
 #include <fstream>
 #include <map>
 #include <algorithm>
 #include <cctype>
+#include <cassert>
+#include <memory>
 
 const int NUM_SECONDS = 5;
+
 
 template<typename Priority, typename Data>
 Heap<Priority, Data>::Heap()
 {
 }
+
 
 template<typename Priority, typename Data>
 Heap<Priority, Data>::~Heap()
@@ -18,13 +24,10 @@ Heap<Priority, Data>::~Heap()
 }
 
 
-
-
-
 template<typename Priority, typename Data>
 void Heap<Priority, Data>::push(Priority priority, Data data)
 {
-	Node n { priority, data };
+	HeapNode n { priority, data };
 	veep_.emplace_back(n);
 }
 
@@ -69,18 +72,62 @@ int Heap<Priority, Data>::parent(int i)
 	return ((i - 1) / 2);
 }
 
+
 template<typename Priority, typename Data>
-typename Heap<Priority, Data>::Node Heap<Priority, Data>::pop()
+typename Heap<Priority, Data>::HeapNode Heap<Priority, Data>::pop()
 {
-	// assert(!veep_.empty());
-	Node front = { veep_[0] };
+	assert(!veep_.empty());
+	HeapNode front = { veep_[0] };
 	veep_.erase(veep_.begin());
 	HeapSort();
 	return front;
 }
 
 
-void printsplats(int v, int max)
+void HuffmanTree::add(int priority, unsigned char data)
+{
+	if (!root_)
+	{
+		root_ = std::make_unique<TreeNode>(priority, data);
+	}
+	else
+	{
+		addhelper(root_, priority, data);
+	}
+}
+
+
+int HuffmanTree::addhelper(std::unique_ptr<TreeNode> const &ptr, int priority, unsigned char data)
+{
+	return 0;
+}
+
+int HuffMap::mapmaker(std::string filename)
+{
+	std::ifstream file(filename); // Input file
+	if (file.good())
+	{
+		std::istreambuf_iterator<char> end; // Iterator
+		for (std::istreambuf_iterator<char> loop(file); loop != end; ++loop)
+		{
+			++m1[*loop]; // prefer prefix increment out of habbit
+		}
+	}
+	else
+	{
+		std::cerr << "File could not be opened" << std::endl;
+		return 0;
+	}
+	if (m1.size() > 0)
+	{
+		return 1;
+	}
+	std::cerr << "File was opened but either file is empty or could not be parsed" << std::endl;
+	return 0;
+}
+
+
+void HuffMap::printsplats(int v, int max)
 {
 	int j = (v * 50) / max + ((((v * 50) < 0) ^ (max > 0)) && ((v * 50) % max));
 	for (int i = 0; i < j; ++i)
@@ -88,44 +135,34 @@ void printsplats(int v, int max)
 }
 
 
-void printmapgraph(std::map<char, int> m)
+void HuffMap::printmapgraph(std::string filename)
 {
-	using pair_type = decltype(m)::value_type;
-	auto x = std::max_element(m.begin(), m.end(),
-		[](const pair_type & p1, const pair_type & p2) {
-		return p1.second < p2.second; });
-	auto max = x->second;
-	for (const auto& kv : m)
+	if (mapmaker(filename))
 	{
-		std::cerr << "(" << std::hex << std::uppercase << std::showbase << (int)kv.first << ")"; 
-		if (isprint(kv.first))
-			std::cerr << " " << kv.first;
-		std::cerr << ": ";
-		printsplats(kv.second, max);
-		std::cerr << std::endl;
+		using pair_type = decltype(m1)::value_type;
+		auto x = std::max_element(m1.begin(), m1.end(),
+			[](const pair_type & p1, const pair_type & p2) {
+			return p1.second < p2.second; });
+		auto max = x->second;
+		for (const auto& kv : m1)
+		{
+			std::cerr << "(" << std::hex << std::uppercase << std::showbase << (int)kv.first << ")";
+			if (isprint(kv.first))
+				std::cerr << " " << kv.first;
+			std::cerr << ": ";
+			printsplats(kv.second, max);
+			std::cerr << std::endl;
+		}
 	}
 }
 
 
 int main()
 {
-	Heap<int, unsigned char> h;
+	Heap<unsigned int, unsigned char> h;
 
-	std::map <char, int> m1; // Create map
-	std::ifstream file("pg20197.txt"); // Input file
-	std::istreambuf_iterator<char> end; // Iterator
-
-	for (std::istreambuf_iterator<char> loop(file); loop != end; ++loop)
-	{
-		++m1[*loop]; // prefer prefix increment out of habbit
-	}
-
-	printmapgraph(m1);
-
-	/*for (const auto i : m1)
-	{
-		h.push(i.second, i.first);
-	}*/
+	HuffMap hm;
+	hm.printmapgraph("pg20197.txt");
 
 	int count = 100;
 	for (int i = 97; i < 111; ++i)
@@ -142,6 +179,10 @@ int main()
 
 	h.HeapSort();
 	h.HeapSort();
+
+	HuffmanTree ht;
+	unsigned char b = 'b';
+	ht.add(100, b);
 
 	auto f = h.pop();
 	std::cout << f.priority_ << " " << f.data_;
