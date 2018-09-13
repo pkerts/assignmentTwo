@@ -97,8 +97,28 @@ void HuffmanTree::add(int priority, unsigned char data)
 }
 
 
+bool HuffmanTree::full(std::unique_ptr<TreeNode> const &ptr)
+{
+	if (ptr->left_ || ptr->right_)
+		return true;
+	return false;
+}
+
 int HuffmanTree::addhelper(std::unique_ptr<TreeNode> const &ptr, int priority, unsigned char data)
 {
+	if (!ptr->left_)
+	{
+		ptr->left_ = std::make_unique<TreeNode>(priority, data);
+		return 1;
+	}
+	else if (!ptr->right_)
+	{
+		ptr->right_ = std::make_unique<TreeNode>(priority, data);
+		return 1;
+	}
+	addhelper(ptr->left_, priority, data);
+	if (!full(ptr->left_))
+		addhelper(ptr->right_, priority, data);
 	return 0;
 }
 
@@ -183,6 +203,12 @@ int main()
 	HuffmanTree ht;
 	unsigned char b = 'b';
 	ht.add(100, b);
+	ht.add(95, (unsigned char)'c');
+	ht.add(90, (unsigned char)'a');
+	ht.add(85, (unsigned char)'f');
+	ht.add(85, (unsigned char)'g');
+	ht.add(80, (unsigned char)'x');
+
 
 	auto f = h.pop();
 	std::cout << f.priority_ << " " << f.data_;
